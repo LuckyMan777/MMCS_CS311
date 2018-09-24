@@ -31,14 +31,7 @@ namespace SimpleLangParser
 
         public void Expr() 
         {
-            if (l.LexKind == Tok.ID || l.LexKind == Tok.INUM)
-            {
-                l.NextLexem();
-            }
-            else
-            {
-                SyntaxError("expression expected");
-            }
+            E();
         }
 
         public void Assign() 

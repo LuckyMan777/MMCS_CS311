@@ -16,26 +16,23 @@ namespace SimpleLangParserTest
     a := 2;
     cycle a
     begin
-        b := a;
+        b := a * 2 + 89 * a;
         c := 234
     end;
     while a 
-        do a := 5;
+        do begin a := 5 end;
 
-    for b := 5 to 7 
+    for b := (a*5+2) to 7 
         do a := 7;
 
     if a then 
-        b:= 5;
+        b:= (5*5+9);
 
     if b then 
-        c := 10
+        if b then
+            c := 10 * 5 + 2 + 2
     else
-        c := 7;
-
-    Expr 5 * 3 + 5 * 5 * 0;
-    Expr
-    Expr 1 * 
+        c := 7
 
 end";
             TextReader inputReader = new StringReader(fileContents);

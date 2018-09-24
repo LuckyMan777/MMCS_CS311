@@ -180,12 +180,12 @@ namespace SimpleLangLexer
                 NextCh();
                 LexKind = Tok.OPENBRACKET;
             }
-            if (currentCh == ')')
+            else if (currentCh == ')')
             {
                 NextCh();
                 LexKind = Tok.CLOSEBRACKET;
             }
-            if (currentCh == '+')
+            else if (currentCh == '+')
             {
                 NextCh();
                 LexKind = Tok.PLUS;
