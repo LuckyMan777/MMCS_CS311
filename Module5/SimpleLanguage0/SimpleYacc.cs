@@ -2,11 +2,11 @@
 // Copyright (c) Wayne Kelly, QUT 2005-2010
 // (see accompanying GPPGcopyright.rtf)
 
-// GPPG version 1.3.6
-// Machine:  DESKTOP-T5P0M2C
-// DateTime: 25.09.2018 15:22:15
-// UserName: Alex
-// Input file <SimpleYacc.y>
+// GPPG version 1.5.0
+// Machine:  STA200B1-203-22
+// DateTime: 01.10.2018 13:15:58
+// UserName: arudnev
+// Input file <SimpleYacc.y - 01.10.2018 13:15:22>
 
 // options: no-lines gplex
 
@@ -20,7 +20,9 @@ namespace SimpleParser
 {
 public enum Tokens {
     error=1,EOF=2,BEGIN=3,END=4,CYCLE=5,INUM=6,
-    RNUM=7,ID=8,ASSIGN=9,SEMICOLON=10,WHILE=11,DO=12};
+    RNUM=7,ID=8,ASSIGN=9,SEMICOLON=10,WHILE=11,DO=12,
+    REPEAT=13,UNTIL=14,FOR=15,TO=16,WRITE=17,OPENBRACKET=18,
+    CLOSEBRACKET=19,IF=20,THEN=21,ELSE=22};
 
 // Abstract base class for GPLEX scanners
 public abstract class ScanBase : AbstractScanner<int,LexLocation> {
@@ -29,45 +31,88 @@ public abstract class ScanBase : AbstractScanner<int,LexLocation> {
   protected virtual bool yywrap() { return true; }
 }
 
+// Utility class for encapsulating token information
+public class ScanObj {
+  public int token;
+  public int yylval;
+  public LexLocation yylloc;
+  public ScanObj( int t, int val, LexLocation loc ) {
+    this.token = t; this.yylval = val; this.yylloc = loc;
+  }
+}
+
 public class Parser: ShiftReduceParser<int, LexLocation>
 {
-  // Verbatim content from SimpleYacc.y
-// Эти объявления добавляются в класс GPPGParser, представляющий собой парсер, генерируемый системой gppg
+  // Verbatim content from SimpleYacc.y - 01.10.2018 13:15:22
+// ГќГІГЁ Г®ГЎГєГїГўГ«ГҐГ­ГЁГї Г¤Г®ГЎГ ГўГ«ГїГѕГІГ±Гї Гў ГЄГ«Г Г±Г± GPPGParser, ГЇГ°ГҐГ¤Г±ГІГ ГўГ«ГїГѕГ№ГЁГ© Г±Г®ГЎГ®Г© ГЇГ Г°Г±ГҐГ°, ГЈГҐГ­ГҐГ°ГЁГ°ГіГҐГ¬Г»Г© Г±ГЁГ±ГІГҐГ¬Г®Г© gppg
     public Parser(AbstractScanner<int, LexLocation> scanner) : base(scanner) { }
-  // End verbatim content from SimpleYacc.y
+  // End verbatim content from SimpleYacc.y - 01.10.2018 13:15:22
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;
 #pragma warning restore 649
-  private static Rule[] rules = new Rule[15];
-  private static State[] states = new State[22];
+  private static Rule[] rules = new Rule[25];
+  private static State[] states = new State[53];
   private static string[] nonTerms = new string[] {
       "progr", "$accept", "block", "stlist", "statement", "assign", "cycle", 
-      "ident", "expr", "while", };
+      "while", "repeat", "for", "write", "if", "ident", "expr", };
 
   static Parser() {
     states[0] = new State(new int[]{3,4},new int[]{-1,1,-3,3});
     states[1] = new State(new int[]{2,2});
     states[2] = new State(-1);
     states[3] = new State(-2);
-    states[4] = new State(new int[]{8,14,3,4,5,18},new int[]{-4,5,-5,21,-6,9,-8,10,-3,16,-7,17});
+    states[4] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-4,5,-5,31,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
     states[5] = new State(new int[]{4,6,10,7});
-    states[6] = new State(-12);
-    states[7] = new State(new int[]{8,14,3,4,5,18},new int[]{-5,8,-6,9,-8,10,-3,16,-7,17});
+    states[6] = new State(-17);
+    states[7] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,8,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
     states[8] = new State(-4);
     states[9] = new State(-5);
     states[10] = new State(new int[]{9,11});
-    states[11] = new State(new int[]{8,14,6,15},new int[]{-9,12,-8,13});
-    states[12] = new State(-9);
-    states[13] = new State(-10);
-    states[14] = new State(-8);
-    states[15] = new State(-11);
+    states[11] = new State(new int[]{8,14,6,15},new int[]{-14,12,-13,13});
+    states[12] = new State(-14);
+    states[13] = new State(-15);
+    states[14] = new State(-13);
+    states[15] = new State(-16);
     states[16] = new State(-6);
     states[17] = new State(-7);
-    states[18] = new State(new int[]{8,14,6,15},new int[]{-9,19,-8,13});
-    states[19] = new State(new int[]{8,14,3,4,5,18},new int[]{-5,20,-6,9,-8,10,-3,16,-7,17});
-    states[20] = new State(-13);
-    states[21] = new State(-3);
+    states[18] = new State(new int[]{8,14,6,15},new int[]{-14,19,-13,13});
+    states[19] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,20,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[20] = new State(-18);
+    states[21] = new State(-8);
+    states[22] = new State(new int[]{8,14,6,15},new int[]{-14,23,-13,13});
+    states[23] = new State(new int[]{12,24});
+    states[24] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,25,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[25] = new State(-19);
+    states[26] = new State(-9);
+    states[27] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-4,28,-5,31,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[28] = new State(new int[]{14,29,10,7});
+    states[29] = new State(new int[]{8,14,6,15},new int[]{-14,30,-13,13});
+    states[30] = new State(-20);
+    states[31] = new State(-3);
+    states[32] = new State(-10);
+    states[33] = new State(new int[]{8,34});
+    states[34] = new State(new int[]{9,35});
+    states[35] = new State(new int[]{8,14,6,15},new int[]{-14,36,-13,13});
+    states[36] = new State(new int[]{16,37});
+    states[37] = new State(new int[]{8,14,6,15},new int[]{-14,38,-13,13});
+    states[38] = new State(new int[]{12,39});
+    states[39] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,40,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[40] = new State(-21);
+    states[41] = new State(-11);
+    states[42] = new State(new int[]{18,43});
+    states[43] = new State(new int[]{8,14,6,15},new int[]{-14,44,-13,13});
+    states[44] = new State(new int[]{19,45});
+    states[45] = new State(-22);
+    states[46] = new State(-12);
+    states[47] = new State(new int[]{8,14,6,15},new int[]{-14,48,-13,13});
+    states[48] = new State(new int[]{21,49});
+    states[49] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,50,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[50] = new State(new int[]{22,51,4,-23,10,-23,14,-23});
+    states[51] = new State(new int[]{8,14,3,4,5,18,11,22,13,27,15,33,17,42,20,47},new int[]{-5,52,-6,9,-13,10,-3,16,-7,17,-8,21,-9,26,-10,32,-11,41,-12,46});
+    states[52] = new State(-24);
+
+    for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
 
     rules[1] = new Rule(-2, new int[]{-1,2});
     rules[2] = new Rule(-1, new int[]{-3});
@@ -76,13 +121,23 @@ public class Parser: ShiftReduceParser<int, LexLocation>
     rules[5] = new Rule(-5, new int[]{-6});
     rules[6] = new Rule(-5, new int[]{-3});
     rules[7] = new Rule(-5, new int[]{-7});
-    rules[8] = new Rule(-8, new int[]{8});
-    rules[9] = new Rule(-6, new int[]{-8,9,-9});
-    rules[10] = new Rule(-9, new int[]{-8});
-    rules[11] = new Rule(-9, new int[]{6});
-    rules[12] = new Rule(-3, new int[]{3,-4,4});
-    rules[13] = new Rule(-7, new int[]{5,-9,-5});
-    rules[14] = new Rule(-10, new int[]{11,-9,12,-5});
+    rules[8] = new Rule(-5, new int[]{-8});
+    rules[9] = new Rule(-5, new int[]{-9});
+    rules[10] = new Rule(-5, new int[]{-10});
+    rules[11] = new Rule(-5, new int[]{-11});
+    rules[12] = new Rule(-5, new int[]{-12});
+    rules[13] = new Rule(-13, new int[]{8});
+    rules[14] = new Rule(-6, new int[]{-13,9,-14});
+    rules[15] = new Rule(-14, new int[]{-13});
+    rules[16] = new Rule(-14, new int[]{6});
+    rules[17] = new Rule(-3, new int[]{3,-4,4});
+    rules[18] = new Rule(-7, new int[]{5,-14,-5});
+    rules[19] = new Rule(-8, new int[]{11,-14,12,-5});
+    rules[20] = new Rule(-9, new int[]{13,-4,14,-14});
+    rules[21] = new Rule(-10, new int[]{15,8,9,-14,16,-14,12,-5});
+    rules[22] = new Rule(-11, new int[]{17,18,-14,19});
+    rules[23] = new Rule(-12, new int[]{20,-14,21,-5});
+    rules[24] = new Rule(-12, new int[]{20,-14,21,-5,22,-5});
   }
 
   protected override void Initialize() {
@@ -94,9 +149,11 @@ public class Parser: ShiftReduceParser<int, LexLocation>
 
   protected override void DoAction(int action)
   {
+#pragma warning disable 162, 1522
     switch (action)
     {
     }
+#pragma warning restore 162, 1522
   }
 
   protected override string TerminalToString(int terminal)

@@ -13,6 +13,7 @@ namespace SimpleCompiler
             string FileName = @"..\..\a.txt";
             try
             {
+                Console.OutputEncoding = System.Text.Encoding.GetEncoding(1251);
                 string Text = File.ReadAllText(FileName);
 
                 Scanner scanner = new Scanner();

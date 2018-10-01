@@ -1,11 +1,11 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <SimpleYacc.y>
+//  GPPG error listing for yacc source file <SimpleYacc.y - 01.10.2018 13:14:00>
 // ==========================================================================
-//  Version:  1.3.6
-//  Machine:  DESKTOP-T5P0M2C
-//  DateTime: 25.09.2018 15:22:15
-//  UserName: Alex
+//  Version:  1.5.0
+//  Machine:  STA200B1-203-22
+//  DateTime: 01.10.2018 13:14:39
+//  UserName: arudnev
 // ==========================================================================
 
 
@@ -18,11 +18,11 @@
 
 %namespace SimpleParser
 
-%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON WHILE DO
+%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON WHILE DO REPEAT UNTIL FOR TO WRITE OPENBRACKET CLOSEBRACKET IF THEN ELSE
 
 %%
-// Warning: NonTerminal symbol "while" is unreachable
-// --------------------------------------------------
+// Warning: NonTerminal symbol "if" is unreachable
+// -----------------------------------------------
 
 progr   : block
 		;
@@ -34,6 +34,10 @@ stlist	: statement
 statement: assign
 		| block  
 		| cycle  
+		| while
+		| repeat
+		| for
+		| write
 		;
 
 ident 	: ID 
@@ -54,7 +58,19 @@ cycle	: CYCLE expr statement
 
 while	: WHILE expr DO statement
 		;
-	
+
+repeat	: REPEAT stlist UNTIL expr
+		;
+
+for		: FOR ID ASSIGN expr TO expr DO statement
+		;
+
+write	: WRITE OPENBRACKET expr CLOSEBRACKET
+		;
+
+if		: IF expr THEN statement ELSE statement
+		;
+
 %%
 // ==========================================================================
 
