@@ -7,7 +7,7 @@
 
 %namespace SimpleParser
 
-%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON WHILE DO REPEAT UNTIL FOR TO WRITE OPENBRACKET CLOSEBRACKET IF THEN ELSE
+%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON WHILE DO REPEAT UNTIL FOR TO WRITE OPENBRACKET CLOSEBRACKET IF THEN ELSE VAR COMMA PLUS MINUS MULTIPLE DIVIDE
 
 %%
 
@@ -26,6 +26,7 @@ statement: assign
 		| for
 		| write
 		| if
+		| var
 		;
 
 ident 	: ID 
@@ -34,8 +35,23 @@ ident 	: ID
 assign 	: ident ASSIGN expr 
 		;
 
-expr	: ident  
+//expr	: ident  
+//		| INUM 
+//		;
+
+expr	: T
+		| expr PLUS T
+		| expr MINUS T
+		;
+
+T		: F
+		| T MULTIPLE F
+		| T DIVIDE F
+		;
+
+F		: ident
 		| INUM 
+		| OPENBRACKET expr CLOSEBRACKET
 		;
 
 block	: BEGIN stlist END 
@@ -58,6 +74,16 @@ write	: WRITE OPENBRACKET expr CLOSEBRACKET
 
 if		: IF expr THEN statement
 		| IF expr THEN statement ELSE statement
+		;
+
+//partvar	: ID
+//		| partvar COMMA ID
+
+var		: VAR partvar
+		;
+
+partvar	: ID
+		| partvar COMMA ID
 		;
 
 %%

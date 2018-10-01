@@ -9,7 +9,7 @@ Digit   [0-9]
 AlphaDigit {Alpha}|{Digit}
 INTNUM  {Digit}+
 REALNUM {INTNUM}\.{INTNUM}
-ID {Alpha}{AlphaDigit}* 
+ID {Alpha}{AlphaDigit}*
 
 %%
 
@@ -30,6 +30,11 @@ ID {Alpha}{AlphaDigit}*
 ";"  { return (int)Tokens.SEMICOLON; }
 "("  { return (int)Tokens.OPENBRACKET; }
 ")"  { return (int)Tokens.CLOSEBRACKET; }
+","  { return (int)Tokens.COMMA; }
+"+"  { return (int)Tokens.PLUS; }
+"-"  { return (int)Tokens.MINUS; }
+"/"  { return (int)Tokens.DIVIDE; }
+"*"  { return (int)Tokens.MULTIPLE; }
 
 [^ \r\n] {
 	LexError();
@@ -75,6 +80,7 @@ class ScannerHelper
 	keywords.Add("if",(int)Tokens.IF);
 	keywords.Add("then",(int)Tokens.THEN);
 	keywords.Add("else",(int)Tokens.ELSE);
+	keywords.Add("var",(int)Tokens.VAR);
   }
   public static int GetIDToken(string s)
   {
