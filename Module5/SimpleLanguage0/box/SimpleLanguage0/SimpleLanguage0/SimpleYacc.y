@@ -7,7 +7,7 @@
 
 %namespace SimpleParser
 
-%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON WHILE DO
+%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON  
 
 %%
 
@@ -37,9 +37,6 @@ block	: BEGIN stlist END
 		;
 
 cycle	: CYCLE expr statement 
-		;
-
-while	: WHILE expr DO statement
 		;
 	
 %%

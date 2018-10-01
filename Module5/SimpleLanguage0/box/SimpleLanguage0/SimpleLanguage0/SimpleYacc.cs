@@ -3,9 +3,9 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.3.6
-// Machine:  DESKTOP-T5P0M2C
-// DateTime: 25.09.2018 15:22:15
-// UserName: Alex
+// Machine:  SSM
+// DateTime: 17.08.2014 11:23:07
+// UserName: ?????????
 // Input file <SimpleYacc.y>
 
 // options: no-lines gplex
@@ -20,7 +20,7 @@ namespace SimpleParser
 {
 public enum Tokens {
     error=1,EOF=2,BEGIN=3,END=4,CYCLE=5,INUM=6,
-    RNUM=7,ID=8,ASSIGN=9,SEMICOLON=10,WHILE=11,DO=12};
+    RNUM=7,ID=8,ASSIGN=9,SEMICOLON=10};
 
 // Abstract base class for GPLEX scanners
 public abstract class ScanBase : AbstractScanner<int,LexLocation> {
@@ -39,11 +39,11 @@ public class Parser: ShiftReduceParser<int, LexLocation>
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;
 #pragma warning restore 649
-  private static Rule[] rules = new Rule[15];
+  private static Rule[] rules = new Rule[14];
   private static State[] states = new State[22];
   private static string[] nonTerms = new string[] {
       "progr", "$accept", "block", "stlist", "statement", "assign", "cycle", 
-      "ident", "expr", "while", };
+      "ident", "expr", };
 
   static Parser() {
     states[0] = new State(new int[]{3,4},new int[]{-1,1,-3,3});
@@ -82,7 +82,6 @@ public class Parser: ShiftReduceParser<int, LexLocation>
     rules[11] = new Rule(-9, new int[]{6});
     rules[12] = new Rule(-3, new int[]{3,-4,4});
     rules[13] = new Rule(-7, new int[]{5,-9,-5});
-    rules[14] = new Rule(-10, new int[]{11,-9,12,-5});
   }
 
   protected override void Initialize() {
@@ -108,6 +107,7 @@ public class Parser: ShiftReduceParser<int, LexLocation>
     else
         return CharToString((char)terminal);
   }
+
 
 }
 }
