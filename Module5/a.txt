@@ -1,0 +1,1 @@
+begin for i:= 1 to 5 do begin a:=2; write(a) end end

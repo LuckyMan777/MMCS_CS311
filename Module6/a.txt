@@ -1,0 +1,23 @@
+begin
+  b := 2;
+  a := 3;
+  a := b;
+  cycle 3
+  begin
+    a := c;
+    c := 1
+  end;
+
+  while a do a := 5;
+
+  repeat a:=5 until a;
+
+  for a:=5 to 10 do a := 5;
+
+  write(a);
+
+  if a then a := 5;
+
+  if a then a := 5 else a := 10
+
+end

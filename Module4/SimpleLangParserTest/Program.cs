@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using SimpleLangParser;
-using SimpleLangLexer;
+using SimpleLexer;
 
 namespace SimpleLangParserTest
 {
@@ -16,24 +16,12 @@ namespace SimpleLangParserTest
     a := 2;
     cycle a
     begin
-        b := a * 2 + 89 * a;
+        while 2 do begin
+           a:=2
+end;
+        b := a;
         c := 234
-    end;
-    while a 
-        do begin a := 5 end;
-
-    for b := (a*5+2) to 7 
-        do a := 7;
-
-    if a then 
-        b:= (5*5+9);
-
-    if b then 
-        if b then
-            c := 10 * 5 + 2 + 2
-    else
-        c := 7
-
+    end
 end";
             TextReader inputReader = new StringReader(fileContents);
             Lexer l = new Lexer(inputReader);
