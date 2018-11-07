@@ -127,6 +127,19 @@ namespace ProgramTree
         }
     }
 
+    public class BinaryNode : ExprNode
+    {
+        public ExprNode Left { get; set; }
+        public ExprNode Right { get; set; }
+        public char Operation { get; set; }
+        public BinaryNode(ExprNode left, ExprNode right, char operation)
+        {
+            Left = left;
+            Right = right;
+            Operation = operation;
+        }
+    }
+
     public class BlockNode : StatementNode
     {
         public List<StatementNode> StList = new List<StatementNode>();

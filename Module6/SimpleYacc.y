@@ -21,15 +21,15 @@
 
 %namespace SimpleParser
 
-%token BEGIN END CYCLE ASSIGN SEMICOLON WHILE DO REPEAT UNTIL FOR TO WRITE OPENBRACKET CLOSEBRACKET IF THEN ELSE VAR
+%token BEGIN END CYCLE ASSIGN SEMICOLON WHILE DO REPEAT UNTIL FOR TO WRITE OPENBRACKET CLOSEBRACKET IF THEN ELSE VAR COMMA PLUS MINUS MULTIPLE DIVIDE
 %token <iVal> INUM 
 %token <dVal> RNUM 
 %token <sVal> ID
 
-%type <eVal> expr ident 
-%type <stVal> assign statement cycle while repeat for write if
+%type <eVal> expr ident T F
+%type <stVal> assign statement cycle while repeat for write if var partvar
 %type <blVal> stlist block
-%type <varVal> var
+%type <varVal> var partvar
 
 %%
 
@@ -64,9 +64,24 @@ ident 	: ID { $$ = new IdNode($1); }
 assign 	: ident ASSIGN expr { $$ = new AssignNode($1 as IdNode, $3); }
 		;
 
-expr	: ident  { $$ = $1 as IdNode; }
-		| INUM { $$ = new IntNumNode($1); }
-		;
+//expr	: ident  { $$ = $1 as IdNode; }
+//		| INUM { $$ = new IntNumNode($1); }
+//		;
+
+expr : T
+     | expr PLUS T {$$ = new BinaryNode($1, $3, '+'); }
+     | expr MINUS T { $$ = new BinaryNode($1, $3, '-'); }
+     ;
+
+T    : F
+     | T MULTIPLE F { $$ = new BinaryNode($1, $3, '*'); }
+     | T DIVIDE F { $$ = new BinaryNode($1, $3, '/'); }
+     ;
+
+F    : ident { $$ = $1 as IdNode; }
+     | INUM { $$ = new IntNumNode($1); }
+     | OPENBRACKET expr CLOSEBRACKET { $$ = $2; }
+     ;
 
 block	: BEGIN stlist END { $$ = $2; }
 		;
@@ -90,11 +105,11 @@ if		: IF expr THEN statement { $$ = new IfNode($2, $4); }
 		| IF expr THEN statement ELSE statement { $$ = new IfNode($2, $4, $6); }
 		;
 
-var		: VAR partvar { $$ = new VarDefNode($1); }
+var		: VAR partvar { $$ = $2 as VarDefNode; }
 		;
 
-partvar	: ID { $$ = new PartvarNode($1 as IdNode);  }
-		| partvar COMMA ID { $1.Add($3 as IdNode); $$ = $1; }
+partvar	: ident { $$ = new VarDefNode($1 as IdNode);  }
+		| partvar COMMA ident { $1.Add($3 as IdNode); $$ = $1; }
 		;
 
 

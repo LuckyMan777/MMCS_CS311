@@ -149,8 +149,16 @@
             "Name": "a"
           },
           "Expr": {
-            "$type": "ProgramTree.IntNumNode, SimpleLang",
-            "Num": 5
+            "$type": "ProgramTree.BinaryNode, SimpleLang",
+            "Left": {
+              "$type": "ProgramTree.IntNumNode, SimpleLang",
+              "Num": 5
+            },
+            "Right": {
+              "$type": "ProgramTree.IntNumNode, SimpleLang",
+              "Num": 6
+            },
+            "Operation": "*"
           },
           "AssOp": 0
         }
@@ -211,6 +219,34 @@
             "Num": 10
           },
           "AssOp": 0
+        }
+      },
+      {
+        "$type": "ProgramTree.VarDefNode, SimpleLang",
+        "Ids": {
+          "$type": "System.Collections.Generic.List`1[[ProgramTree.IdNode, SimpleLang]], mscorlib",
+          "$values": [
+            {
+              "$type": "ProgramTree.IdNode, SimpleLang",
+              "Name": "a"
+            },
+            {
+              "$type": "ProgramTree.IdNode, SimpleLang",
+              "Name": "b"
+            },
+            {
+              "$type": "ProgramTree.IdNode, SimpleLang",
+              "Name": "c"
+            },
+            {
+              "$type": "ProgramTree.IdNode, SimpleLang",
+              "Name": "d"
+            },
+            {
+              "$type": "ProgramTree.IdNode, SimpleLang",
+              "Name": "e"
+            }
+          ]
         }
       }
     ]
