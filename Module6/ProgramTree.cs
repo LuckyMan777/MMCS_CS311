@@ -114,20 +114,16 @@ namespace ProgramTree
         }
     }
 
-    public class PartvarNode : StatementNode
-    {
-        public ExprNode Expr { get; set; }
-        public PartvarNode(ExprNode expr)
-        {
-            Expr = expr;
-        }
-    }
     public class VarDefNode : StatementNode
     {
-        public PartvarNode PartVar { get; set; }
-        public VarDefNode(PartvarNode partvar)
+        public List<IdNode> Ids = new List<IdNode>();
+        public VarDefNode(IdNode id)
         {
-            PartVar = partvar;
+            Add(id);
+        }
+        public void Add(IdNode id)
+        {
+            Ids.Add(id);
         }
     }
 
