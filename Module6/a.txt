@@ -20,6 +20,8 @@ begin
 
   if a then a := 5 else a := 10;
 
-  var a,b,c,d,e
+  var a,b,c,d,e;
+
+  a := (5-5)*(5+2) - 5 + 1
 
 end
