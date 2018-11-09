@@ -53,24 +53,30 @@ namespace SimpleCompiler
 
                     var cecv = new ExprComplexityVisitor();
                     parser.root.Visit(cecv);
-                    foreach (var item in cecv.list)
+                    Console.WriteLine("Список сложностей выражений: ");
+                    Console.Write("\t");
+                    for (int i = 0; i < cecv.list.Count-1; ++i)
                     {
-
+                        Console.Write("{0}, ", cecv.list[i]);
                     }
-                    Console.WriteLine("Наиболее часто используемая переменная = {0}", cuv.mostCommonlyUsedVar());
-                    Console.WriteLine("-------------------------------");
+                    if (cecv.list.Count > 0)
+                    Console.Write("{0};", cecv.list[cecv.list.Count-1]);
+                    Console.WriteLine("\n-------------------------------");
 
                     var cviv = new ChangeVarIdVisitor("a", "d");
                     parser.root.Visit(cviv);
                     Console.WriteLine("Переименование переменной a на d:");
-                    pp = new PrettyPrintVisitor();
-                    parser.root.Visit(pp);
-                    Console.WriteLine(pp.Text);
+                    Console.WriteLine(cviv.Text);
                     Console.WriteLine("-------------------------------");
 
                     var mncv = new MaxNestCyclesVisitor();
                     parser.root.Visit(mncv);
                     Console.WriteLine("Максимальная вложенность циклов = {0}", mncv.MaxNest);
+                    Console.WriteLine("-------------------------------");
+
+                    var micnv = new MaxIfCycleNestVisitor();
+                    parser.root.Visit(micnv);
+                    Console.WriteLine("Максимальная вложенность циклов и конструкций if ... then ... else = {0}", micnv.MaxNest);
                     Console.WriteLine("-------------------------------");
                 }
             }

@@ -12,6 +12,10 @@ namespace ProgramTree
 
     public abstract class ExprNode : Node // базовый класс для всех выражений
     {
+        public override void Visit(Visitor v)
+        {
+            v.VisitExprNode(this);
+        }
     }
 
     public class IdNode : ExprNode
@@ -140,6 +144,29 @@ namespace ProgramTree
         public override void Visit(Visitor v)
         {
             v.VisitVarDefNode(this);
+        }
+    }
+
+    public class IfNode : StatementNode
+    {
+        public ExprNode Expr { get; set; }
+        public StatementNode StTrue { get; set; }
+        public StatementNode StFalse { get; set; }
+        public IfNode(ExprNode expr, StatementNode sttrue)
+        {
+            Expr = expr;
+            StTrue = sttrue;
+        }
+        public IfNode(ExprNode expr, StatementNode sttrue, StatementNode stfalse)
+        {
+            Expr = expr;
+            StTrue = sttrue;
+            StFalse = stfalse;
+        }
+
+        public override void Visit(Visitor v)
+        {
+            v.VisitIfNode(this);
         }
     }
 }

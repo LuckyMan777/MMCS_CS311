@@ -15,21 +15,47 @@ namespace SimpleLang.Visitors
         }
 
         public int CurrCompl = 0;
-        public int NowBinOp = 0;
+        public int CurrNest = 0;
         public List<int> list = new List<int>();
-        public bool ComplAdded = false;
+        public bool NowIsExpr = false;
 
         public override void VisitBinOpNode(BinOpNode binop)
         {
-            if (NowBinOp > 0)
+            CurrNest += 1;
+            if (CurrNest > 0)
                 CurrCompl += 
-                    (binop.Op == '+') || (binop.Op == '-') ? 1 : 3;
-            NowBinOp += 1;
+                    (binop.Op == '+') || (binop.Op == '-') ? 1 : 3;   
             binop.Left.Visit(this);
             binop.Right.Visit(this);
-            NowBinOp -= 1;
-            if (NowBinOp == 0)
+            CurrNest -= 1;
+            if (CurrNest == 0)
+            {
+                if (CurrCompl != 0)
+                    list.Add(CurrCompl);
                 CurrCompl = 0;
+            }
+        }
+
+        public override void VisitIdNode(IdNode id)
+        {
+            if (NowIsExpr)
+            {
+                if (CurrNest == 0)
+                {
+                    list.Add(0);
+                }
+            }
+        }
+
+        public override void VisitIntNumNode(IntNumNode id)
+        {
+            if (NowIsExpr)
+            {
+                if (CurrNest == 0)
+                {
+                    list.Add(0);
+                }
+            }
         }
     }
 }

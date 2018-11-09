@@ -17,5 +17,7 @@ namespace SimpleLang.Visitors
         public virtual void VisitWriteNode(WriteNode w) { }
         public virtual void VisitVarDefNode(VarDefNode w) { }
         public virtual void VisitEmptyNode(EmptyNode w) { }
+        public virtual void VisitIfNode(IfNode w) { }
+        public virtual void VisitExprNode(ExprNode w) { }
     }
 }

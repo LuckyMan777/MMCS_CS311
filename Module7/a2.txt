@@ -1,0 +1,41 @@
+begin
+  var a,b,d;
+  b := 2;
+  a := 3;
+  a := a * 4 + b;;;
+
+  cycle 3
+  begin
+    a := a + 1;
+    cycle 3
+    begin
+      a := 1
+    end;
+    write(a)
+  end;
+
+  cycle 3
+  begin
+    a := a + 1;
+    cycle 3
+    begin
+      a := a + 6;
+      cycle 3
+      begin
+        cycle 3 if 1 then cycle 4 a := 1
+      end;
+      write(b)
+    end;
+    write(a)
+  end;
+
+  b := 5 * 3;
+  b := 9 + 8;
+  b := (5 + 7) * (9 * 16);
+
+  if (a + 1) then a := 5;
+  if (a - 1) then a := 1 else b := 4
+
+
+  
+end

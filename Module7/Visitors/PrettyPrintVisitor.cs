@@ -6,12 +6,12 @@ using ProgramTree;
 
 namespace SimpleLang.Visitors
 {
-    class PrettyPrintVisitor: Visitor
+    public class PrettyPrintVisitor: Visitor
     {
         public string Text = "";
         private int Indent = 0;
 
-        private string IndentStr()
+        public string IndentStr()
         {
             return new string(' ', Indent);
         }
@@ -83,6 +83,22 @@ namespace SimpleLang.Visitors
             Text += IndentStr() + "var " + w.vars[0].Name;
             for (int i = 1; i < w.vars.Count; i++)
                 Text += ',' + w.vars[i].Name;
+        }
+        public override void VisitIfNode(IfNode w)
+        {
+            Text += IndentStr() + "if ";
+            w.Expr.Visit(this);
+            Text += " then\n";
+            IndentPlus();
+            w.StTrue.Visit(this);
+            IndentMinus();
+            if (!(w.StFalse is null))
+            {     
+                Text += "\n" + IndentStr() + "else\n";
+                IndentPlus();
+                w.StFalse.Visit(this);
+                IndentMinus();
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SimpleLang.Visitors
         {
             // для каких-то визиторов порядок может быть обратный - вначале обойти выражение, потом - идентификатор
             a.Id.Visit(this);
-            a.Expr.Visit(this);
+            (a.Expr as ExprNode).Visit(this);
         }
         public override void VisitCycleNode(CycleNode c) 
         {
@@ -40,6 +40,22 @@ namespace SimpleLang.Visitors
         {
             foreach (var v in w.vars)
                 v.Visit(this);
+        }
+        public override void VisitIfNode(IfNode c)
+        {
+            c.Expr.Visit(this);
+            c.StTrue.Visit(this);
+            if (!(c.StFalse is null))
+                c.StFalse.Visit(this);
+        }
+        public override void VisitExprNode(ExprNode w)
+        {
+            if (w is IntNumNode)
+                (w as IntNumNode).Visit(this);
+            if (w is IdNode)
+                (w as IdNode).Visit(this);
+            if (w is BinOpNode)
+                (w as BinOpNode).Visit(this);
         }
     }
 }
