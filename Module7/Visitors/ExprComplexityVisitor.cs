@@ -14,5 +14,22 @@ namespace SimpleLang.Visitors
             throw new NotImplementedException();
         }
 
-     }
+        public int CurrCompl = 0;
+        public int NowBinOp = 0;
+        public List<int> list = new List<int>();
+        public bool ComplAdded = false;
+
+        public override void VisitBinOpNode(BinOpNode binop)
+        {
+            if (NowBinOp > 0)
+                CurrCompl += 
+                    (binop.Op == '+') || (binop.Op == '-') ? 1 : 3;
+            NowBinOp += 1;
+            binop.Left.Visit(this);
+            binop.Right.Visit(this);
+            NowBinOp -= 1;
+            if (NowBinOp == 0)
+                CurrCompl = 0;
+        }
+    }
 }

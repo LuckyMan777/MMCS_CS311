@@ -42,11 +42,21 @@ namespace SimpleCompiler
 
                     var midCount = new CountCyclesOpVisitor();
                     parser.root.Visit(midCount);
-                    Console.WriteLine("Среднее количество операторов = {0}", midCount.MidCount());
+                    Console.WriteLine("Среднее количество операторов = {0}; cntCycles = {1}, cntOps = {2}", 
+                        midCount.MidCount(), midCount.CountCycles, midCount.CountOps);
                     Console.WriteLine("-------------------------------");
 
                     var cuv = new CommonlyUsedVarVisitor();
                     parser.root.Visit(cuv);
+                    Console.WriteLine("Наиболее часто используемая переменная = {0}", cuv.mostCommonlyUsedVar());
+                    Console.WriteLine("-------------------------------");
+
+                    var cecv = new ExprComplexityVisitor();
+                    parser.root.Visit(cecv);
+                    foreach (var item in cecv.list)
+                    {
+
+                    }
                     Console.WriteLine("Наиболее часто используемая переменная = {0}", cuv.mostCommonlyUsedVar());
                     Console.WriteLine("-------------------------------");
 
