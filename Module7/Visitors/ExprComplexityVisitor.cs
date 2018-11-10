@@ -17,28 +17,27 @@ namespace SimpleLang.Visitors
         public int CurrCompl = 0;
         public int CurrNest = 0;
         public List<int> list = new List<int>();
-        public bool NowIsExpr = false;
+        public int CurrNestExprs = 0;
 
         public override void VisitBinOpNode(BinOpNode binop)
         {
             CurrNest += 1;
-            if (CurrNest > 0)
-                CurrCompl += 
-                    (binop.Op == '+') || (binop.Op == '-') ? 1 : 3;   
+            CurrCompl += 
+                (binop.Op == '+') || (binop.Op == '-') ? 1 : 3;
             binop.Left.Visit(this);
             binop.Right.Visit(this);
             CurrNest -= 1;
             if (CurrNest == 0)
             {
-                if (CurrCompl != 0)
-                    list.Add(CurrCompl);
+                //if (CurrCompl != 0)
+                list.Add(CurrCompl);
                 CurrCompl = 0;
             }
         }
 
         public override void VisitIdNode(IdNode id)
         {
-            if (NowIsExpr)
+            if (CurrNestExprs > 0)
             {
                 if (CurrNest == 0)
                 {
@@ -49,13 +48,44 @@ namespace SimpleLang.Visitors
 
         public override void VisitIntNumNode(IntNumNode id)
         {
-            if (NowIsExpr)
+            if (CurrNestExprs > 0)
             {
                 if (CurrNest == 0)
                 {
                     list.Add(0);
                 }
             }
+        }
+
+        public override void VisitAssignNode(AssignNode a)
+        {
+            // для каких-то визиторов порядок может быть обратный - вначале обойти выражение, потом - идентификатор
+            a.Id.Visit(this);
+            ++CurrNestExprs;
+            (a.Expr as ExprNode).Visit(this);
+            --CurrNestExprs;
+        }
+        public override void VisitCycleNode(CycleNode c)
+        {
+            ++CurrNestExprs;
+            c.Expr.Visit(this);
+            --CurrNestExprs;
+            c.Stat.Visit(this);
+        }
+        public override void VisitWriteNode(WriteNode w)
+        {
+            ++CurrNestExprs;
+            w.Expr.Visit(this);
+            --CurrNestExprs;
+        }
+        public override void VisitIfNode(IfNode c)
+        {
+            ++CurrNestExprs;
+            c.Expr.Visit(this);
+            --CurrNestExprs;
+            c.StTrue.Visit(this);
+            if (!(c.StFalse is null))
+                c.StFalse.Visit(this);
         }
     }
 }

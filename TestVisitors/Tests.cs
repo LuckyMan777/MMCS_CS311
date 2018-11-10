@@ -157,14 +157,18 @@ namespace TestVisitors
             {
                 Parser p = TestHelpers.Parse(@"begin var a; 
                                                     cycle 2 
+                                                    begin
                                                         cycle 1 
                                                             a:=2; 
                                                         cycle 3 
                                                             cycle 5 
+                                                            begin
                                                                 cycle 6 
                                                                     a:=5; 
                                                                 cycle 4 
-                                                                    write(5) 
+                                                                    write(5)
+                                                            end
+                                                    end
                                               end");
                 Assert.IsTrue(p.Parse());
                 var loopCounter = new MaxNestCyclesVisitor();

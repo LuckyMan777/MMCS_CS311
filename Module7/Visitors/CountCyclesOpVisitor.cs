@@ -14,7 +14,7 @@ namespace SimpleLang.Visitors
         public int MidCount()
         {
             if (CountCycles != 0)
-                return (int)System.Math.Round((double)CountOps / CountCycles);
+                return CountOps / CountCycles;
             else
                 return 0;
         }
@@ -38,14 +38,6 @@ namespace SimpleLang.Visitors
             a.Expr.Visit(this);
             
         }
-        /*
-        public override void VisitBlockNode(BlockNode bl) 
-        {
-            if (NowCycles > 0)
-                CountOps += 1;
-            foreach (var st in bl.StList)
-                st.Visit(this);
-        }
         
         public override void VisitWriteNode(WriteNode w) 
         {
@@ -60,6 +52,6 @@ namespace SimpleLang.Visitors
                 CountOps += 1;
             foreach (var v in w.vars)
                 v.Visit(this);
-        }*/
+        }
     }
 }

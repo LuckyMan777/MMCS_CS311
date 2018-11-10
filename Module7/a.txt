@@ -1,1 +1,1 @@
-begin var a; a:=2+2; a:=a+2*a-3; a:=3; end
+begin var a; cycle 3 if 1 then cycle 4 a := 1 end
