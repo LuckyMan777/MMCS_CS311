@@ -97,6 +97,36 @@ namespace SimpleLang.Visitors
                 vars[v.Name] = genc.DeclareLocal(typeof(int));
         }
 
+        public override void VisitIfNode(IfNode cond)
+        {
+            var ifExpr = genc.DeclareLocal(typeof(int));
+            cond.expr.Visit(this);
+            genc.Emit(OpCodes.Stloc, ifExpr);
+
+            Label ifTrue = genc.DefineLabel();
+            Label ifFalse = genc.DefineLabel();
+            Label endIf = genc.DefineLabel();
+            Label l1 = genc.DefineLabel();
+
+            genc.Emit(OpCodes.Ldloc, ifExpr);
+            genc.Emit(OpCodes.Ldc_I4_0);
+            if (cond.ifFalse != null)
+                genc.Emit(OpCodes.Beq, ifFalse);
+            else
+                genc.Emit(OpCodes.Beq, endIf);
+
+            //if true
+            cond.ifTrue.Visit(this);
+            genc.Emit(OpCodes.Br, endIf);
+
+            //if false
+            genc.MarkLabel(ifFalse);
+            if (cond.ifFalse != null)
+                cond.ifFalse.Visit(this);
+
+            genc.MarkLabel(endIf);
+        }
+
         public void EndProgram()
         {
             genc.EndProgram();
@@ -112,5 +142,7 @@ namespace SimpleLang.Visitors
             foreach (var s in genc.commands)
                 Console.WriteLine(s);
         }
+
+        
     }
 }

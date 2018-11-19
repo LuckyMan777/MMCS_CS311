@@ -1,1 +1,1 @@
-begin var a; a := (232 / 5) + (232 % 5); write(a) end
+begin var x,y; x := 1; y := x-1; if x then if y then write(2) else write(3) end
